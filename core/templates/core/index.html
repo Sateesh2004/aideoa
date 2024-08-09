@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-block {
+            text-align: center;
+        }
+        .profile-pic-container {
+            margin-bottom: 20px;
+        }
+        .dp {
+            font-size: 40px; 
+            font-weight: bold;
+            color: #333;
+        }
+        .detail-container {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .detail-container span:first-child {
+            font-weight: bold;
+            color: #555;
+        }
+        .detail-container span:last-child {
+            color: #777;
+        }
+        .log {
+            display: block;
+            margin: 20px 0;
+            color: red;
+            text-decoration: none;
+        }
+        .id-card {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background: #fff;
+            width: 400px;
+            margin: 0 auto;
+        }
+        .id-card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 0;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .id-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-top: 20px;
+        }
+        .id-card h2 {
+            margin: 10px 0;
+            font-size: 22px;
+            color: #333;
+        }
+        .id-card p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .id-card-footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .links {
+            margin: 20px 0;
+        }
+        .links a {
+            display: block;
+            margin: 10px 0;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .id-card, .id-card * {
+                visibility: visible;
+            }
+            .id-card {
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin: auto;
+                border: none;
+                box-shadow: none;
+            }
+        }
+
+        /* Button styles */
+        .download-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-block">
+            <div class="profile-pic-container">
+                <h1 class="profile">Homepage</h1>
+                <h1 class="profile">Welcome to AIDEOA</h1>
+                <div class="dp">{{ dp }}</div>
+            </div>
+            <div class="detail-container">
+                <span>Username:</span>
+                <span>{{ user_name }}</span>
+            </div>
+            <div class="detail-container">
+                <span>First Name:</span>
+                <span>{{ first_name }}</span>
+            </div>
+            <div class="detail-container">
+                <span>Last Name:</span>
+                <span>{{ last_name }}</span>
+            </div>
+            <div class="detail-container">
+                <span>Email:</span>
+                <span>{{ email }}</span>
+            </div>
+            <a class="log" href="/log-out">Logout</a>
+        </div>
+        
+        <div class="links">
+            <a href="/colleagues">See the list of people who want to shift</a>
+            <a href="/jobshift">If you want to shift then click here</a>
+            <a href="/icard">If you want your virtual ID card then click here</a>
+        </div>
+
+        <hr>
+
+        {% if person %}
+            <div class="id-card" id="id-card">
+                <div class="id-card-header">
+                    AIDEOA ID Card
+                </div>
+                {% if person.photo %}
+                    <img src="{{ person.photo.url }}" alt="Photo">
+                {% else %}
+                    <img src="{% static 'default_photo.jpg' %}" alt="Default Photo">
+                {% endif %}
+                <h2>{{ person.first_name }} {{ person.last_name }}</h2>
+                <h2>{{ person.user }}</h2>
+                <p>Email: {{ person.email }}</p>
+                <p>Mobile No: {{ person.mobile_no }}</p>
+                <p>Company: {{ person.current_company }}</p>
+                <div class="id-card-footer">
+                    <p>VALID TILL : JUN-2025</p>
+                    <p>Certified that the above-mentioned member is registered under AIDEOA</p>
+                    <p>Company Signature</p>
+                </div>
+            </div>
+            <a id="download-button" class="download-button">Download ID Card</a>
+        {% else %}
+            <p>Please fill out the form to download your ID card</p>
+        {% endif %}
+    </div>
+
+    <!-- Updated html2canvas CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.getElementById("download-button").addEventListener("click", function() {
+            html2canvas(document.getElementById("id-card")).then(function(canvas) {
+                var link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "id_card.png";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        });
+    </script>
+</body>
+</html>
